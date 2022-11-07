@@ -1,2 +1,2 @@
 # chat-room
-simple chat room using database
+simple chat room
