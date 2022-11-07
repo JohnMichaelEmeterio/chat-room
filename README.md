@@ -1,2 +1,2 @@
 # chat-room
-simple chat room using firebase
+simple chat room using database
