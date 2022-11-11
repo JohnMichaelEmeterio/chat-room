@@ -1,4 +1,3 @@
- 
 <!DOCTYPE html>
 <html>
 
@@ -23,16 +22,18 @@
         background: -webkit-linear-gradient(to right, #030303, #030303, #030303);
         background: linear-gradient(to right, #030303, #23d009, #030303);
     }
-      div.scroll {
+
+    div.scroll {
         width: 650px;
         height: 34em;
         overflow: auto;
         text-align: justify;
         padding: 1.0em;
-      }
-      .scroll::-webkit-scrollbar {
-  display: none;
-}
+    }
+
+    .scroll::-webkit-scrollbar {
+        display: none;
+    }
 
     .chat {
         margin-top: auto;
@@ -286,20 +287,31 @@
         background-color: rgba(0, 0, 0, 0.2);
     }
 
+    .userN {
+        margin-right: 4em;
+        font-size: 80%;
+        text-align: right;
+    }
+
+    .usern {
+        margin-left: 4em;
+        font-size: 80%;
+    }
+
+
     @media (max-width: 576px) {
         .contacts_card {
             margin-bottom: 15px !important;
         }
-        
+
     }
-    
 </style>
 
 <body>
     <div class="container-fluid h-100">
         <div class="row justify-content-center h-100">
             <div class="chat">
-               
+
                 <div class="card">
                     <div class="card-header msg_head">
                         <div class="d-flex bd-highlight">
@@ -312,17 +324,17 @@
                                 <span>Chat room</span>
                                 <p>Online</p>
                             </div>
-                           
+
                         </div>
                         <span id="action_menu_btn"><i class="fas fa-ellipsis-v"></i></span>
                         <div class="action_menu">
-                            
+
                         </div>
                     </div>
                     <div class="scroll">
-                    <div  class="card-body msg_card_body" id="bodyContent">
+                        <div class="card-body msg_card_body" id="bodyContent">
 
-                    </div>
+                        </div>
                     </div>
                     <div class="card-footer">
                         <div class="input-group">
@@ -348,9 +360,6 @@
 
 
 <script type="module">
-
-
-
     // Import the functions you need from the SDKs you need
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js";
     import {
@@ -377,18 +386,24 @@
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
+    
 
     var myName = prompt("Enter your name");
+    var userPass = prompt("Enter your password");
+
+    
 
     submit.addEventListener('click', (e) => {
         var message = document.getElementById('message').value;
         var name = myName;
+        var userpass = userPass;
 
         const id = push(child(ref(database), 'messages')).key;
 
         set(ref(database, 'messages/' + id), {
             name: name,
-            message: message
+            userPass: userPass,
+            message: message,
         });
         document.getElementById('message').value = "";
         alert('message has sent');
@@ -398,22 +413,24 @@
     const newMsg = ref(database, 'messages/');
     onChildAdded(newMsg, (data) => {
         if (data.val().name != myName) {
-            var divData = '<div class="d-flex justify-content-start mb-4" id="fromDiv">\n' +
+            var divData = '<div class="usern">' + data.val().name + '' + '</div >\n' +
+             '<div class="d-flex justify-content-start mb-4" id="fromDiv">\n' +
                 '                        <div class="img_cont_msg">\n' +
                 '                            <img src="https://cdn-icons-png.flaticon.com/512/456/456212.png"\n' +
                 '                                 class="rounded-circle user_img_msg">\n' +
                 '                        </div>\n' +
-                '                        <div class="msg_cotainer" >\n' +
-                '                            ' + data.val().message + '' +
+                '                        <div class="msg_cotainer" >\n' +     
+                '                            ' + data.val().message + '' + 
                 '                            <span class="msg_time"></span>\n' +
                 '                        </div>\n' +
                 '                    </div>';
             var d1 = document.getElementById('bodyContent');
             d1.insertAdjacentHTML('beforebegin', divData);
         } else {
-            var divData = '<div class="d-flex justify-content-end mb-4">\n' +
+            var divData = '<div class="userN">' + data.val().name + '' + '</div >\n' +
+                          '<div class="d-flex justify-content-end mb-4">\n' +
                 '                        <div class="msg_cotainer_send" id="sendDiv">\n' +
-                '                            ' + data.val().message + '' +
+                '                            ' + data.val().message + '' + 
                 '                            <span class="msg_time_send">8:55 AM, Today</span>\n' +
                 '                        </div>\n' +
                 '                        <div class="img_cont_msg">\n' +
@@ -421,6 +438,7 @@
                 '                                 class="rounded-circle user_img_msg">\n' +
                 '                        </div>\n' +
                 '                    </div>';
+                                        
             var d1 = document.getElementById('bodyContent');
             d1.insertAdjacentHTML('beforebegin', divData);
         }
@@ -434,4 +452,4 @@
             $('.action_menu').toggle();
         });
     });
-</script>
+</script>   
